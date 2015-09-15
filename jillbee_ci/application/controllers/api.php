@@ -7,6 +7,8 @@ require(APPPATH.'/libraries/REST_Controller.php');
 //---------------------------------------------------------------------------------------------------------------
 // ENDPOINTS:
 //---------------------------------------------------------------------------------------------------------------
+// TO DO: Interpret success or failure from models on each API call
+//---------------------------------------------------------------------------------------------------------------
 class Api extends REST_Controller
 {
   function Api()
@@ -15,11 +17,11 @@ class Api extends REST_Controller
 
     $this->load->helper('date_helper');
 
-    //$this->load->model('allergy');
+    $this->load->model('allergy');
     $this->load->model('location');
     $this->load->model('menu');
     $this->load->model('menu_item');
-    //$this->load->model('rating');
+    $this->load->model('rating');
   }
 
   public function index_get()
@@ -50,7 +52,7 @@ class Api extends REST_Controller
 
     if ( !empty($error_message) )
     {
-      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 400);
+      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 200);
       return;
     }
 
@@ -78,7 +80,7 @@ class Api extends REST_Controller
   {
     if ( !$this->get('id') )
     {
-      $this->response(array("result" => "failure", "message" => "API Error: No 'id' supplied"),400);
+      $this->response(array("result" => "failure", "message" => "API Error: No 'id' supplied"), 200);
       return;
     }
 
@@ -123,21 +125,54 @@ class Api extends REST_Controller
   //---------------------------------------------------------------------------------------------------------------
   public function allergy_get()
   {
+    if ( $this->get('client') )
+    {
+      $allergy = $this->allergy->get_client_allergies($this->get('client'), $this->get('order'), $this->get('enabled'));
+      $this->response(array("result" => "success", $allergy), 200);
+      return;
+    }
+    else
+    {
+      $allergy = $this->allergy->get_allergies($this->get('order'), $this->get('enabled'));
+      $this->response(array("result" => "success", $allergy), 200);
+      return;
+    }
 
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Rating Endpoint
-  //  Must supply an item ID and a rating (int) and the API saves the additional/new rating for the item off to the 
+  //  Must supply an item ID, a rating (int), client ID, and the API saves the additional/new rating for the item off to the 
   //  database
   //---------------------------------------------------------------------------------------------------------------
   // * = required
   //  Query
   //      item (int)*
   //      rating (int)*
+  //      client (int)*
   //---------------------------------------------------------------------------------------------------------------
   public function rating_post()
   {
+    $error_message = '';
 
+    if (!$this->post('item'))
+      $error_message .= " 'item' missing; ";
+    if (!$this->post('rating'))
+      $error_message .= " 'rating' missing; ";
+    if (!$this->post('client'))
+      $error_message .= " 'client' missing; ";
+
+    $result = $this->rating->add_rating($this->post('client'), $this->post('item'), $this->post('rating'));
+    
+    if ( $result['result'] )
+    {
+      $this->response(array("result" => true, $result['data']), 200);
+      return;
+    }
+    else
+    {
+      $this->response(array("result" => false, $result['message']), 200);
+      return;
+    }
   }  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // feedback Endpoint
@@ -196,7 +231,7 @@ class Api extends REST_Controller
     // Verify endpoint parameter
     if ( !$this->get('endpoint') )
     {
-      $this->response(array("message" => "API Error: No 'endpoint' supplied"),400);
+      $this->response(array("message" => "API Error: No 'endpoint' supplied"), 200);
       return;
     }
     // Show endpoint meta -->
