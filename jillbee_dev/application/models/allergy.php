@@ -37,7 +37,7 @@ class Allergy extends CI_Model
 	}
 	public function get_allergies($ordered=false, $enabledFilter=false)
 	{
-		// Validate Parameters
+		// Validate Parameters t
 		
 		// Run Query
 		if ($ordered === 'true')
