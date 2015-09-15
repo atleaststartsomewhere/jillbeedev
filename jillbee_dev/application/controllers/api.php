@@ -17,7 +17,7 @@ class Api extends REST_Controller
 
     $this->load->helper('date_helper');
 
-    //$this->load->model('allergy');
+    $this->load->model('allergy');
     $this->load->model('location');
     $this->load->model('menu');
     $this->load->model('menu_item');
@@ -125,6 +125,16 @@ class Api extends REST_Controller
   //---------------------------------------------------------------------------------------------------------------
   public function allergy_get()
   {
+    if ( $this->get('client') )
+    {
+      $allergy = $this->allergy->get_client_allergies($this->get('client'), $this->get('order'), $this->get('enabled'));
+      $this->response(array("result" => "success", $allergy), 200);
+    }
+    else
+    {
+      $allergy = $this->allergy->get_allergies($this->get('order'), $this->get('enabled'));
+      $this->response(array("result" => "success", $allergy), 200);
+    }
 
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
