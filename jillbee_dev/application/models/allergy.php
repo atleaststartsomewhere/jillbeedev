@@ -21,7 +21,7 @@ class Allergy extends CI_Model
 		if ($enabledFilter === 'true')
 			$this->db->where('allergies.enabled', true);
 
-		$this->db->order_by('name asc');
+		$this->db->order_by('allergies.allergy_name asc');
 		$this->db->select("*");
 		$this->db->from("allergy_clients");
 		$this->db->join('allergies', 'allergies.id = allergies_clients.allergy_id');
