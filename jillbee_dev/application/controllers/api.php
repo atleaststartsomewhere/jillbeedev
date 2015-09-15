@@ -52,7 +52,7 @@ class Api extends REST_Controller
 
     if ( !empty($error_message) )
     {
-      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 400);
+      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 200);
       return;
     }
 
@@ -80,7 +80,7 @@ class Api extends REST_Controller
   {
     if ( !$this->get('id') )
     {
-      $this->response(array("result" => "failure", "message" => "API Error: No 'id' supplied"),400);
+      $this->response(array("result" => "failure", "message" => "API Error: No 'id' supplied"), 200);
       return;
     }
 
@@ -208,7 +208,7 @@ class Api extends REST_Controller
     // Verify endpoint parameter
     if ( !$this->get('endpoint') )
     {
-      $this->response(array("message" => "API Error: No 'endpoint' supplied"),400);
+      $this->response(array("message" => "API Error: No 'endpoint' supplied"), 200);
       return;
     }
     // Show endpoint meta -->
