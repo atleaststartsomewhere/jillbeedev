@@ -2,6 +2,11 @@
 
 require(APPPATH.'/libraries/REST_Controller.php');
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CDA API CONTROLLER
+//---------------------------------------------------------------------------------------------------------------
+// ENDPOINTS:
+//---------------------------------------------------------------------------------------------------------------
 class Api extends REST_Controller
 {
   function Api()
@@ -10,9 +15,11 @@ class Api extends REST_Controller
 
     $this->load->helper('date_helper');
 
+    $this->load->model('allergy');
     $this->load->model('location');
+    $this->load->model('menu');
     $this->load->model('menu_item');
-
+    $this->load->model('rating');
   }
 
   public function index_get()
@@ -43,7 +50,7 @@ class Api extends REST_Controller
 
     if ( !empty($error_message) )
     {
-      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message));
+      $this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 400);
       return;
     }
 
@@ -53,7 +60,9 @@ class Api extends REST_Controller
     else
       $monday = get_monday($this->get('day'));
 
-    $this->response($monday, 200);
+    $menu = $this->menu->get_menu($monday, $this->get('client'), $this->get('location'));
+
+    $this->response($menu, 200);
 
 
   }
@@ -103,6 +112,31 @@ class Api extends REST_Controller
       $this->response(array("result" => "success", "locations" => $locations), 200);      
       return;
     }
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Allergy Endpoint
+  //  Can optionally supply a client to get valid allergies for a client, or just all alergies (with not client param)
+  //---------------------------------------------------------------------------------------------------------------
+  // * = required
+  //  Query
+  //      client (int)
+  //---------------------------------------------------------------------------------------------------------------
+  public function allergy_get()
+  {
+
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Rating Endpoint
+  //  Must supply an item ID and a rating (int) and the API saves the additional/new rating for the item off to the database
+  //---------------------------------------------------------------------------------------------------------------
+  // * = required
+  //  Query
+  //      item (int)*
+  //      rating (int)*
+  //---------------------------------------------------------------------------------------------------------------
+  public function rating_post()
+  {
+
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Meta Endpoint
