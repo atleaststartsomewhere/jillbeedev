@@ -21,7 +21,7 @@ class Api extends REST_Controller
     $this->load->model('location');
     $this->load->model('menu');
     $this->load->model('menu_item');
-    //$this->load->model('rating');
+    $this->load->model('rating');
   }
 
   public function index_get()
@@ -129,27 +129,40 @@ class Api extends REST_Controller
     {
       $allergy = $this->allergy->get_client_allergies($this->get('client'), $this->get('order'), $this->get('enabled'));
       $this->response(array("result" => "success", $allergy), 200);
+      return;
     }
     else
     {
       $allergy = $this->allergy->get_allergies($this->get('order'), $this->get('enabled'));
       $this->response(array("result" => "success", $allergy), 200);
+      return;
     }
 
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Rating Endpoint
-  //  Must supply an item ID and a rating (int) and the API saves the additional/new rating for the item off to the 
+  //  Must supply an item ID, a rating (int), client ID, and the API saves the additional/new rating for the item off to the 
   //  database
   //---------------------------------------------------------------------------------------------------------------
   // * = required
   //  Query
   //      item (int)*
   //      rating (int)*
+  //      client (int)*
   //---------------------------------------------------------------------------------------------------------------
   public function rating_post()
   {
+    $error_message = '';
 
+    if (!$this->get('item'))
+      $error_message .= " 'item' missing; ";
+    if (!$this->get('rating'))
+      $error_message .= " 'rating' missing; ";
+    if (!$this->get('client'))
+      $error_message .= " 'client' missing; ";
+
+    $result = $this->rating->add_rating($this->get('client'), $this->get('item'), $this->get('rating'));
+    var_dump($result);
   }  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // feedback Endpoint
