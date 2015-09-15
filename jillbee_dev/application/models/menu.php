@@ -127,7 +127,7 @@ class Entry {
 
 		foreach ( $allergiesQuery->result()  as $allergy )
 		{
-			$new_allergy = new Allergy($allergy->id, $allergy->allergy_name);
+			$new_allergy = new AllergyC($allergy->id, $allergy->allergy_name);
 			array_push($this->allergies,$new_allergy);
 		}
 
@@ -153,7 +153,7 @@ class Entry {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CLASS : Allergy
 //---------------------------------------------------------------------------------------------------------------
-class Allergy {
+class AllergyC {
 	public $id;
 	public $name;
 
