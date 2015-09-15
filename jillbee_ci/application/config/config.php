@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/dev/jillbee_ci/main'; // abc
+$config['base_url'] = 'http://localhost/dev/jillbee_ci/main'; // abcasdf
 
 /*
 |--------------------------------------------------------------------------
