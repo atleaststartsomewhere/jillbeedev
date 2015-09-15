@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/dev/jillbee_ci/main'; // HAI BRADY
+$config['base_url'] = 'http://localhost/dev/jillbee_ci/main'; // HAI BRADY 2
 
 /*
 |--------------------------------------------------------------------------
