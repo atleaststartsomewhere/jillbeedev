@@ -11,29 +11,53 @@ class Rating extends CI_Model
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function add_rating($client_id, $menu_item_id, $rating)
 	{
+		$error_message = "";
 		// Validate Parameters
 		if ( !isset($client_id) )
-			return "Error [MODEL.R.AR.1]: Client ID not set";
+			$message .= "Error [MODEL.R.AR.1]: Client ID not set";
 		if ( !$this->check_valid_client_id($client_id) )
-			return "Error [MODEL.R.AR.2]: Invalid Client ID";
+			$message .= "Error [MODEL.R.AR.2]: Invalid Client ID";
 
 		if ( !isset($menu_item_id) )
-			return "Error [MODEL.R.AR.3]: Menu Item ID not set";
+			$message .= "Error [MODEL.R.AR.3]: Menu Item ID not set";
 		if ( !$this->check_valid_menu_item_id($client_id) )
-			return "Error [MODEL.R.AR.4]: Invalid Menu Item ID";
+			$message .= "Error [MODEL.R.AR.4]: Invalid Menu Item ID";
 
 		if ( !isset($rating) )
-			return "Error [MODEL.R.AR.5]: Rating not set";
+			$message .= "Error [MODEL.R.AR.5]: Rating not set";
 		if ( $rating > 5 || $rating < 1 )
-			return "Error [MODEL.R.AR.6]: Invalid Rating: ".$rating;
+			$message .= "Error [MODEL.R.AR.6]: Invalid Rating: ".$rating;
+
+		if ( !empty($message) )
+			return array("result" => false, "message" => $error_message);
 
 		// Run Query
 		$ratingObject = array("client_id" => $client_id,
-								"menu_item_idd" => $menu_item_id,
+								"menu_item_id" => $menu_item_id,
 								"rating" => $rating);
 		$query = $this->db->insert("ratings", $ratingObject);
 
-		return $query;
+		// Send back new rating and count
+		$newRatingObject = new stdClass();
+		$newRatingObject = $this->get_rating($client_id, $menu_item_id);
+		return array("result" => true, "data" => $newRatingObject);
+	}
+
+	public function get_rating($client_id, $menu_item_id)
+	{
+		$resultObject = new stdClass();
+		$resultObject->rating = 0;
+		$resultObject->rating_count = 0;
+
+		$query = $this->db->get_where("ratings", array("menu_item_id" => $menu_item_id, "client_id" => $client_id));
+		foreach ( $query->result() as $rating ) 
+			$resultObject->rating += $rating->rating;
+		if ( $query->num_rows() > 0 )
+		{
+			$resultObject->rating_count = $query->num_rows();
+			$resultObject->rating = $resultObject->rating/$resultObject->rating_count;
+		}
+		return $resultObject;
 	}
 
 	public function check_valid_client_id($client_id)

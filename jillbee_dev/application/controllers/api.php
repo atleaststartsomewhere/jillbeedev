@@ -154,15 +154,25 @@ class Api extends REST_Controller
   {
     $error_message = '';
 
-    if (!$this->get('item'))
+    if (!$this->post('item'))
       $error_message .= " 'item' missing; ";
-    if (!$this->get('rating'))
+    if (!$this->post('rating'))
       $error_message .= " 'rating' missing; ";
-    if (!$this->get('client'))
+    if (!$this->post('client'))
       $error_message .= " 'client' missing; ";
 
-    $result = $this->rating->add_rating($this->get('client'), $this->get('item'), $this->get('rating'));
-    var_dump($result);
+    $result = $this->rating->add_rating($this->post('client'), $this->post('item'), $this->post('rating'));
+    
+    if ( $result['result'] )
+    {
+      $this->response(array("result" => true, $result['data']), 200);
+      return;
+    }
+    else
+    {
+      $this->response(array("result" => false, $result['message']), 200);
+      return;
+    }
   }  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // feedback Endpoint
