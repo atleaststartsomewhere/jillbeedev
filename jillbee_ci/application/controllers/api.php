@@ -15,11 +15,11 @@ class Api extends REST_Controller
 
     $this->load->helper('date_helper');
 
-    $this->load->model('allergy');
+    //$this->load->model('allergy');
     $this->load->model('location');
     $this->load->model('menu');
     $this->load->model('menu_item');
-    $this->load->model('rating');
+    //$this->load->model('rating');
   }
 
   public function index_get()
@@ -127,7 +127,8 @@ class Api extends REST_Controller
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Rating Endpoint
-  //  Must supply an item ID and a rating (int) and the API saves the additional/new rating for the item off to the database
+  //  Must supply an item ID and a rating (int) and the API saves the additional/new rating for the item off to the 
+  //  database
   //---------------------------------------------------------------------------------------------------------------
   // * = required
   //  Query
@@ -135,6 +136,20 @@ class Api extends REST_Controller
   //      rating (int)*
   //---------------------------------------------------------------------------------------------------------------
   public function rating_post()
+  {
+
+  }  
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // feedback Endpoint
+  //  Must supply a text-block (email_body) and optional email address (email_from, that gets sent as an email to 
+  //  Jillbee (returns success/fail)
+  //---------------------------------------------------------------------------------------------------------------
+  // * = required
+  //  Query
+  //      email_body (string)*
+  //      email_from (string)
+  //---------------------------------------------------------------------------------------------------------------
+  public function feedback_post()
   {
 
   }
