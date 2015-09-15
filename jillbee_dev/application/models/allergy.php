@@ -45,7 +45,7 @@ class Allergy extends CI_Model
 		if ($enabledFilter === 'true')
 			$this->db->where('enabled', true);
 
-		$this->db->order_by('name asc');
+		$this->db->order_by('allergy_name asc');
 		$query = $this->db->get_where('allergies');
 		
 		// Check Query
