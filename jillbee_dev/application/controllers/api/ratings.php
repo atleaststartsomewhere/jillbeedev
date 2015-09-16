@@ -37,14 +37,14 @@ class Ratings extends REST_Controller {
 
 		$result = $this->rating->add_rating($this->post('client'), $this->post('item'), $this->post('rating'));
 
-		if ( $result['result'] )
+		if ( $result->success )
 		{
-	  		$this->response(array("result" => true, $result['data']), 200);
+	  		$this->response($result, 200);
 	  		return;
 		}
 		else
 		{
-	 		$this->response(array("result" => false, $result['message']), 200);
+	 		$this->response($result, 200);
 	 		return;
 		}
 	}  

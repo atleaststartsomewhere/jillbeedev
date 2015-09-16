@@ -26,13 +26,13 @@ class Allergies extends REST_Controller {
 		if ( $this->get('client') )
 		{
 			$allergy = $this->allergy->get_client_allergies($this->get('client'), $this->get('order'), $this->get('enabled'));
-			$this->response(array("result" => "success", $allergy), 200);
+			$this->response($allergy, 200);
 			return;
 		}
 		else
 		{
 			$allergy = $this->allergy->get_allergies($this->get('order'), $this->get('enabled'));
-			$this->response(array("result" => "success", $allergy), 200);
+			$this->response($allergy, 200);
 			return;
 		}
 	}
