@@ -2,15 +2,16 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . '/libraries/REST_Controller.php';
+require APPPATH . '/libraries/API_Controller.php';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOCATIONS API CONTROLLER
 // : index
-class Menus extends REST_Controller {
+class Menus extends API_Controller {
 
 	function Menus()	{
 		parent::__construct();
+		$this->load->helper('date_helper');
 		$this->load->model('menu');
 		$this->load->model('model_result');
 	}

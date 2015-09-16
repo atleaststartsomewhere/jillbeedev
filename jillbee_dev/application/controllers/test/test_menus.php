@@ -3,9 +3,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rating Unit Tests
 //---------------------------------------------------------------------------------------------------------------
-class Test_Ratings extends CI_Controller
+class Test_Menus extends CI_Controller
 {
-  function Test_Ratings() { 
+  function Test_Menus() { 
     parent::__construct();
     $this->load->helper('form');
     $this->load->helper('url');
@@ -18,19 +18,19 @@ class Test_Ratings extends CI_Controller
   // Template: GET
     $parameters = array('client' => '1', 'item' => '1', 'rating' => '1');
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/ratings/add/', $parameters, 'One', 'valid submission');
+    $viewdata = $this->test_case(base_url().'index.php/api/ratings/add/', $parameters, 'One', 'valid submission');
     $this->load->view('test/get', $viewdata);
   */
 //---------------------------------------------------------------------------------------------------------------
 
   public function index() {
-    $this->load->view('test/require/top', array('title' => 'Rating Unit Tests')); // Required first view
+    $this->load->view('test/require/top', array('title' => 'Menus Unit Tests')); // Required first view
 
     // Test 1 - Valid Rating
-    $parameters = array('client' => '1', 'rating' => '1');
+    $parameters = array('client' => 1, 'location' => 1);
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/ratings/add/', $parameters, 'One', 'valid submission');
-    $this->load->view('test/post', $viewdata);
+    $viewdata = $this->test_case('api/menus/', $parameters, 'One', 'Valid submission');
+    $this->load->view('test/get', $viewdata);
 
     $this->load->view('test/require/bottom' ); // Required last view
   }
