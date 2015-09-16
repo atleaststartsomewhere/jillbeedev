@@ -23,7 +23,9 @@ class Allergies extends REST_Controller {
 	//---------------------------------------------------------------------------------------------------------------
 	public function index_get()
 	{
-		if ( $this->get('client') )
+		$client = $this->get('client');
+
+		if ( isset($client) )
 		{
 			$allergy = $this->allergy->get_client_allergies($this->get('client'), $this->get('order'), $this->get('enabled'));
 			$this->response($allergy, 200);
