@@ -26,6 +26,8 @@ class Location extends CI_Model
 		// Validate Parameters
 		if ( !isset($client_id) )
 			return new Model_Result(false, "Error: Missing Client ID");
+		if ( !$this->check_valid_client_id($client_id))
+			return new Model_Result(false, "Error: Invalid Client ID".$client_id);
 
 		// Run Query
 		if ($ordered === 'true')
@@ -58,5 +60,14 @@ class Location extends CI_Model
 			return new Model_Result(false, "Error: No Results Found");
 
 		return new Model_result(true, "Success: One or More Locations Sent", $query->result());
+	}
+
+	public function check_valid_client_id($client_id)
+	{
+		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
+		if ( $query->num_rows() == 0 )
+			return false;
+		else
+			return true;
 	}
 }

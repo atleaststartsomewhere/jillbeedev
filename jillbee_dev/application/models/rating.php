@@ -22,7 +22,7 @@ class Rating extends CI_Model
 
 		if ( !isset($menu_item_id) )
 			return new Model_Result(false, "Error: Missing Menu Item ID");
-		if ( !$this->check_valid_menu_item_id($client_id) )
+		if ( !$this->check_valid_menu_item_id($menu_item_id) )
 			return new Model_Result(false, "Error: Invalid Menu Item ID >> ".$menu_item_id);
 
 		if ( !isset($rating) )

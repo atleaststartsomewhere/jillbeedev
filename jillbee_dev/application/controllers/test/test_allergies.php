@@ -3,9 +3,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rating Unit Tests
 //---------------------------------------------------------------------------------------------------------------
-class Test_Menus extends CI_Controller
+class Test_Allergies extends CI_Controller
 {
-  function Test_Menus() { 
+  function Test_Allergies() { 
     parent::__construct();
     $this->load->helper('form');
     $this->load->helper('url');
@@ -24,37 +24,26 @@ class Test_Menus extends CI_Controller
 //---------------------------------------------------------------------------------------------------------------
 
   public function index() {
-    $this->load->view('test/require/top', array('title' => 'Menus Unit Tests')); // Required first view
+    $this->load->view('test/require/top', array('title' => 'Allergies Unit Tests')); // Required first view
 
-    // Test 1 - Valid Menu
-    $parameters = array('client' => '1', 'location' => '1');
+    // Test 1 - Valid Client
+    $parameters = array('client' => '1');
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/menus/', $parameters, 'One', 'Valid submission');
+    $viewdata = $this->test_case('api/allergies/', $parameters, 'One', 'Valid client');
     $this->load->view('test/get', $viewdata);
 
     // Test 2 - Invalid client
-    $parameters = array('client' => '0', 'location' => '1');
+    $parameters = array('client' => '0');
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/menus/', $parameters, 'Two', 'Invalid client');
+    $viewdata = $this->test_case('api/allergies/', $parameters, 'Two', 'Invalid client');
     $this->load->view('test/get', $viewdata);
 
-    // Test 3 - Invalid location
-    $parameters = array('client' => '1', 'location' => '0');
+    // Test 2 - No client
+    $parameters = array();
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/menus/', $parameters, 'Three', 'Invalid location');
+    $viewdata = $this->test_case('api/allergies/', $parameters, 'Three', 'No client');
     $this->load->view('test/get', $viewdata);
 
-    // Test 4 - Invalid client and location
-    $parameters = array('client' => '0', 'location' => '0');
-    // url, parameter array, title, description
-    $viewdata = $this->test_case('api/menus/', $parameters, 'Four', 'Invalid client and location');
-    $this->load->view('test/get', $viewdata);
-
-    // Test 5 - Missing client
-    $parameters = array('location' => '1');
-    // url, parameter array, title, description
-    $viewdata = $this->test_case('api/menus/', $parameters, 'Five', 'Missing client');
-    $this->load->view('test/get', $viewdata);
 
     $this->load->view('test/require/bottom' ); // Required last view
   }
