@@ -8,7 +8,7 @@
 		<?php 
 		$full_url = base_url().'index.php/'.$url;
 		foreach ( $values as $key => $value ) { 
-			$full_url .= $key.'/'.$value.'/';
+			$full_url .= '?'.$key.'='.$value.'&';
 		} ?>	
 		<iframe src="<?php echo $full_url;?>"></iframe>
 	</div>
