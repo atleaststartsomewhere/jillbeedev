@@ -5,6 +5,11 @@
 	<h2>Unit Test <?php echo $title; ?></h2>
 	<span><?php echo $description; ?></span>
 	<div>
-		<iframe src="<?php echo $url;?>"></iframe>
+		<?php 
+		$full_url = base_url().'/index.php/'.$url;
+		foreach ( $values as $key => $value ) { 
+			$full_url .= $key.'/'.$value.'/';
+		} ?>	
+		<iframe src="<?php echo $full_url;?>"></iframe>
 	</div>
 </div>
