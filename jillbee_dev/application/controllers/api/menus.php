@@ -12,6 +12,7 @@ class Menus extends REST_Controller {
 	function Menus()	{
 		parent::__construct();
 		$this->load->model('menu');
+		$this->load->model('model_result');
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Menu Endpoint
@@ -33,7 +34,7 @@ class Menus extends REST_Controller {
 
 		if ( !empty($error_message) )
 		{
-	  		$this->response(array("result" => "failure", "message" => "API Error: ".$error_message), 200);
+	  		$this->response(new Model_Result(false, $error_message), 200);
 	  		return;
 		}
 		//---------------------------------------------------------------------------------------------------------------

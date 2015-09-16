@@ -27,13 +27,13 @@ class Locations extends REST_Controller {
 		if ( $this->get('client') )
 		{
 			$locations = $this->location->get_client_locations($this->get('client'), $this->get('order'), $this->get('enabled'));
-			$this->response(array("result" => "success", "locations" => $locations), 200);
+			$this->response($locations, 200);
 			return;
 		}
 		else
 		{
 			$locations = $this->location->get_locations($this->get('order'), $this->get('enabled'));
-			$this->response(array("result" => "success", "locations" => $locations), 200);      
+			$this->response($locations, 200);      
 			return;
 		}
 	}
