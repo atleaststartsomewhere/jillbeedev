@@ -7,13 +7,18 @@ class Allergy extends CI_Model
 	public $name;			// string
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function __construct() { parent::__construct(); }
+	public function __construct() { 
+		parent::__construct(); 
+		$this->load->model('model_result');
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function get_client_allergies($client_id, $ordered=false, $enabledFilter=false)
 	{
 		// Validate Parameters
 		if ( !isset($client_id) )
-			return "Error [MODEL.A.GCA.1]: Client ID not set";
+			return new Model_Result(false, "Error: Missing Client ID");
+		if ( !$this->check_valid_client_id($client_id) )
+			return new Model_Result(false, "Error: Invalid Client ID >> ".$client_id);
 
 		// Run Query
 		if ($ordered === 'true')
@@ -23,7 +28,7 @@ class Allergy extends CI_Model
 
 		$this->db->order_by('allergies.allergy_name asc');
 		$this->db->select("*");
-		$this->db->from("allergy_clients");
+		$this->db->from("allergies_clients");
 		$this->db->join('allergies', 'allergies.id = allergies_clients.allergy_id');
 		$this->db->where('allergies_clients.id', $client_id);
 
@@ -53,5 +58,14 @@ class Allergy extends CI_Model
 			return "Error [MODEL.A.GL.1]: No results returned";
 
 		return $query->result();
+	}
+
+	public function check_valid_client_id($client_id)
+	{
+		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
+		if ( $query->num_rows() == 0 )
+			return false;
+		else
+			return true;
 	}
 }
