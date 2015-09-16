@@ -7,29 +7,28 @@ class Rating extends CI_Model
 	public $name;			// string
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function __construct() { parent::__construct(); }
+	public function __construct() { 
+		parent::__construct(); 
+		$this->load->model('model_result'); // success, message, data
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function add_rating($client_id, $menu_item_id, $rating)
 	{
-		$error_message = "";
 		// Validate Parameters
 		if ( !isset($client_id) )
-			$message .= "Error [MODEL.R.AR.1]: Client ID not set";
+			return new Model_Result(false, "Error: Missing Client ID");
 		if ( !$this->check_valid_client_id($client_id) )
-			$message .= "Error [MODEL.R.AR.2]: Invalid Client ID";
+			return new Model_Result(false, "Error: Invalid Client ID >> ".$client_id);
 
 		if ( !isset($menu_item_id) )
-			$message .= "Error [MODEL.R.AR.3]: Menu Item ID not set";
+			return new Model_Result(false, "Error: Missing Menu Item ID");
 		if ( !$this->check_valid_menu_item_id($client_id) )
-			$message .= "Error [MODEL.R.AR.4]: Invalid Menu Item ID";
+			return new Model_Result(false, "Error: Invalid Menu Item ID >> ".$menu_item_id);
 
 		if ( !isset($rating) )
-			$message .= "Error [MODEL.R.AR.5]: Rating not set";
+			return new Model_Result(false, "Error: Missing Rating");
 		if ( $rating > 5 || $rating < 1 )
-			$message .= "Error [MODEL.R.AR.6]: Invalid Rating: ".$rating;
-
-		if ( !empty($message) )
-			return array("result" => false, "message" => $error_message);
+			return new Model_Result(false, "Error: Invalid Rating >> ".$rating);
 
 		// Run Query
 		$ratingObject = array("client_id" => $client_id,
@@ -40,7 +39,7 @@ class Rating extends CI_Model
 		// Send back new rating and count
 		$newRatingObject = new stdClass();
 		$newRatingObject = $this->get_rating($client_id, $menu_item_id);
-		return array("result" => true, "data" => $newRatingObject);
+		return new Model_Result(true, "New Rating Recorded.",$newRatingObject);
 	}
 
 	public function get_rating($client_id, $menu_item_id)

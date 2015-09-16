@@ -26,6 +26,7 @@ class Menu extends CI_Model
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function get_menu($date, $client_id, $location_id)
 	{
+		// TO DO : Validating client ID and location ID
 		$week = new Week($date, $client_id, $location_id);
 		return $week;
 	}
@@ -62,7 +63,7 @@ class Day {
 
 	public function __construct($date, $client_id, $location_id) {
 		$CI =& get_instance();
-		$this->date = $date;
+		$this->date = date('U', strtotime($date));
 		$this->client_id = $client_id;
 		$this->location_id = $location_id;
 
@@ -76,8 +77,7 @@ class Day {
 				array_push($this->entries, $new_entry);
 				$this->num_entries++;
 			}
-		}
-	}
+		}	}
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
