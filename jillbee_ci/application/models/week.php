@@ -62,7 +62,7 @@ class Day {
 
 	public function __construct($date, $client_id, $location_id) {
 		$CI =& get_instance();
-		$this->date = date('U', strtotime($date));
+		$this->date = $date;
 		$this->client_id = $client_id;
 		$this->location_id = $location_id;
 
