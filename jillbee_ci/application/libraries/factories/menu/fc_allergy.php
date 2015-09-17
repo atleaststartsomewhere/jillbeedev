@@ -3,14 +3,17 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CLASS : Allergy
 //---------------------------------------------------------------------------------------------------------------
-class AllergyC {
+class FC_Allergy {
 	public $id;
 	public $name;
 
-	public function __construct($allergy_id, $allergy_name) {
+	public function __construct($params) {
 		$CI =& get_instance();
 
-		$this->id = $allergy_id;
-		$this->name = $allergy_name;
+		if ( count($params) == 0 ) // is a library load
+			return;
+
+		$this->id = $params['allergy_id'];
+		$this->name = $params['allergy_name'];
 	}
 }
