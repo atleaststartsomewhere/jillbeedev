@@ -1,6 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Allergy extends CI_Model
+require_once APPPATH . '/libraries/Extended_Model.php';
+
+class Allergy extends Extended_Model
 {
 
 	public $id;				// int
@@ -58,14 +60,5 @@ class Allergy extends CI_Model
 			return "Error [MODEL.A.GL.1]: No results returned";
 
 		return $query->result();
-	}
-
-	public function check_valid_client_id($client_id)
-	{
-		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
-		if ( $query->num_rows() == 0 )
-			return false;
-		else
-			return true;
 	}
 }
