@@ -1,8 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH . '/libraries/Extended_Model.php';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOCATION MODEL
-class Location extends CI_Model
+class Location extends Extended_Model
 {
 
 	public $id;				// int
@@ -60,14 +62,5 @@ class Location extends CI_Model
 			return new Model_Result(false, "Error: No Results Found");
 
 		return new Model_result(true, "Success: One or More Locations Sent", $query->result());
-	}
-
-	public function check_valid_client_id($client_id)
-	{
-		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
-		if ( $query->num_rows() == 0 )
-			return false;
-		else
-			return true;
 	}
 }

@@ -1,6 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rating extends CI_Model
+require_once APPPATH . '/libraries/Extended_Model.php';
+
+class Rating extends Extended_Model
 {
 
 	public $id;				// int
@@ -57,22 +59,5 @@ class Rating extends CI_Model
 			$resultObject->rating = $resultObject->rating/$resultObject->rating_count;
 		}
 		return $resultObject;
-	}
-
-	public function check_valid_client_id($client_id)
-	{
-		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
-		if ( $query->num_rows() == 0 )
-			return false;
-		else
-			return true;
-	}
-	public function check_valid_menu_item_id($menu_item_id)
-	{
-		$query = $this->db->get_where('menu_items', array('id' => $menu_item_id), 1);
-		if ( $query->num_rows() == 0 )
-			return false;
-		else
-			return true;
 	}
 }

@@ -58,4 +58,4 @@ class Test_Allergies extends CI_Controller
     return $test_case; 
   }
 
-}
+} 
