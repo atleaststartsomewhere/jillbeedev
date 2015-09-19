@@ -40,7 +40,7 @@ class API_Response extends CI_Model
 
 		log_message($log_level, '=[API RESPONSE]======================================');
 		log_message($log_level, ' time:          ' . $timestamp);
-		log_message($log_level, ' logic:         ' . $logic_point);
+		log_message($log_level, ' success:       ' . $success);
 		log_message($log_level, ' message:       ' . implode(",", $message));
 		log_message($log_level, ' logic:         ' . $logic_point);
 		log_message($log_level, ' function:      ' . $function);
