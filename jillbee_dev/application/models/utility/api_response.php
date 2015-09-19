@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MODEL_RESULT UTILITY MODEL
-class Response extends CI_Model
+// UTILITY MODEL
+class API_Response extends CI_Model
 {
 	// Lang File Array Keys
 	public $external_prefix = "external_";
@@ -17,21 +17,22 @@ class Response extends CI_Model
 		$timestamp = date('r');
 		// Craft and Log Error
 		if ( !$success )
-			$this->internal_log_message($success, $logic_point, $function, $args, $timestamp);
+			$this->internal_log_message($success, $logic_point, $this->internal_message($messages), $function, $args, $timestamp);
+
 		// Craft and Return Front-End Response
 		$response 				= new stdClass();
 		$response->success 		= true;
 		$response->data 		= $dataObject;
-		$response->message 		= $external_message;
+		$response->messages		= $this->external_message($messages);
 		$response->timestamp 	= $timestamp;
 		if ( ENVIRONMENT == 'development' ) {
-			$response->debug_message 	= $internal_message;
-			$response->debug_function 	= '@'.$logic_point.': '.$function.'('.$args.')';
+			$response->debug_messages 	= $this->internal_message($messages);
+			$response->debug_function 	= '@'.$logic_point.': '.$function.'('.implode(",", $args).')';
 		}
 		return $response;
 	}
 
-	public function internal_log_message($success, $logic_point, $function, $args, $timestamp)
+	public function internal_log_message($success, $logic_point, $message, $function, $args, $timestamp)
 	{
 		$log_level='info';
 		if (!$success)
@@ -40,18 +41,28 @@ class Response extends CI_Model
 		log_message($log_level, '=[API RESPONSE]======================================');
 		log_message($log_level, ' time:          ' . $timestamp);
 		log_message($log_level, ' success:       ' . $success);
+		log_message($log_level, ' message:       ' . implode(",", $message));
 		log_message($log_level, ' logic:         ' . $logic_point);
 		log_message($log_level, ' function:      ' . $function);
-		log_message($log_level, ' args:          ' . implode(",", $args);
+		log_message($log_level, ' args:          ' . implode(",", $args));
 		log_message($log_level, '====================================================');
 	}
 
-	public function messages($lang_identifier) 
+	public function external_message($lang_identifiers) 
 	{
 		$this->load->language('api_responses');
-		$ex = $this->lang->line('external_api_responses');
-		$in = $this->lang->line('internal_api_responses');
+		$messages = array();
+		foreach ( $lang_identifiers as $id )
+			array_push($messages, $this->lang->line('external_'.$id));
+		return $messages;
+	}
 
-		return $in . ',' . $ex . ',';
+	public function internal_message($lang_identifiers) 
+	{
+		$this->load->language('api_responses');
+		$messages = array();
+		foreach ( $lang_identifiers as $id )
+			array_push($messages, $this->lang->line('internal_'.$id));
+		return $messages;
 	}
 }
