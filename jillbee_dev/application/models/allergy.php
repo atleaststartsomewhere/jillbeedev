@@ -11,16 +11,22 @@ class Allergy extends Extended_Model
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function __construct() { 
 		parent::__construct(); 
-		$this->load->model('model_result');
+		$this->load->language('api_responses');
+		$this->load->model('response');
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function get_client_allergies($client_id, $ordered=false, $enabledFilter=false)
 	{
+		$response = new stdClass(); $response->message[asdfasdfakdfm;lasd]
+
 		// Validate Parameters
+		/* RESPONSE LOGGING: @param_validate */
 		if ( !isset($client_id) )
-			return new Model_Result(false, "Error: Missing Client ID");
+			$this->response->add_messages($response, 'client_id_missing');
 		if ( !$this->check_valid_client_id($client_id) )
-			return new Model_Result(false, "Error: Invalid Client ID >> ".$client_id);
+			$param_messages .= $this->response->messages('client_id_invalid');
+
+
 
 		// Run Query
 		if ($ordered === 'true')
@@ -44,7 +50,7 @@ class Allergy extends Extended_Model
 	}
 	public function get_allergies($ordered=false, $enabledFilter=false)
 	{
-		// Validate Parameters t
+		// Validate Parameters
 		
 		// Run Query
 		if ($ordered === 'true')
