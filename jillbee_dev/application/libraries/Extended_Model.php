@@ -28,6 +28,22 @@ class Extended_Model extends CI_Model {
 			return true;
 	}
 
+	public function check_valid_location_name($location_name)
+	{
+		$query = $this->db->get_where('locations', array('name' => $location_name), 1);
+		if ($query->num_rows() == 0)
+			return true;
+		else
+			return false;
+	}
 
+	public function check_valid_location($location_id)
+	{
+		$query = $this->db->get_where('locations', array('id' => $location_id), 1);
+		if ($query->num_rows() == 0)
+			return false;
+		else
+			return true;
+	}
 
 }
