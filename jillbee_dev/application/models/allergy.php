@@ -37,7 +37,7 @@ class Allergy extends Extended_Model
 		$this->db->select("*");
 		$this->db->from("allergies_clients");
 		$this->db->join('allergies', 'allergies.id = allergies_clients.allergy_id');
-		$this->db->where('allergies_clients.id', $client_id);
+		$this->db->where('allergies_clients.client_id', $client_id);
 
 		$query = $this->db->get();
 
