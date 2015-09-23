@@ -20,9 +20,6 @@
 		</main>
 		<div class="isVisible"></div>
 		<!-- SCRIPTS-->
-		<script type="text/javascript">
-			localStorage.setItem(<?php echo('"'.$storedClientKey.'"');?>,<?php echo('"'.$storedClientValue.'"');?>);
-		</script>
 		<script src="<?php echo $react_url; ?>/js/scripts.min.js"></script>
 	</body>
 </html>

@@ -26,7 +26,7 @@ class Menus extends API_Controller {
 	//---------------------------------------------------------------------------------------------------------------
 	public function index_get()
 	{
-		$parameters = array('client', 'location');
+		$parameters = array('location');
 		$parameterCheck = $this->parameters_exist($parameters, $this->get());
 		if ( !$parameterCheck->success )
 		{
@@ -39,7 +39,7 @@ class Menus extends API_Controller {
 		else
 	  		$monday = get_monday($this->get('day'));
 
-		$menu = $this->menu->get_menu($monday, $this->get('client'), $this->get('location'));
+		$menu = $this->menu->get_menu($monday, $this->session->userdata('client'), $this->get('location'));
 
 		$this->response($menu, 200);
 	}
