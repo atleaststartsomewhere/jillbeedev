@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="<?php echo $react_url; ?>/styles/style.min.css">
 	</head>
 	<body>
-		<main id="main" class="js_simple simple">
+		<main id="main">
 		</main>
 		<div class="isVisible"></div>
 		<!-- SCRIPTS-->
