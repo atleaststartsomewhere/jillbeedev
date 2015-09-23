@@ -1,11 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Classes in this file: Menu, Week, Day, Entry, Allergy, Version
+require_once APPPATH . '/libraries/Extended_Model.php';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CLASS : MENU
 //---------------------------------------------------------------------------------------------------------------
-class Menu extends CI_Model
+class Menu extends Extended_Model
 {
 	public $days; 			// array of day
 	/* day:

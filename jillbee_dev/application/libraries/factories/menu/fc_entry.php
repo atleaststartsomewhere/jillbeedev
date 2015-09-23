@@ -45,7 +45,7 @@ class FC_Entry {
 		$CI->db->select("*");
 		$CI->db->from("allergies_entries");
 		$CI->db->join('allergies', 'allergies.id = allergies_entries.allergy_id');
-		$CI->db->where('allergies_entries.id', $this->entry_id);
+		$CI->db->where('allergies_entries.menu_item_id', $this->menu_item_id);
 		$CI->db->where('allergies.enabled', true);
 
 		$allergiesQuery = $CI->db->get();

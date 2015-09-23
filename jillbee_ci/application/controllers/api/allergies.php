@@ -2,12 +2,12 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . '/libraries/REST_Controller.php';
+require APPPATH . '/libraries/API_Controller.php';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOCATIONS API CONTROLLER
 // : index
-class Allergies extends REST_Controller {
+class Allergies extends API_Controller {
 
 	function Allergies()	{
 		parent::__construct();

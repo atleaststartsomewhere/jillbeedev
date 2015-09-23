@@ -1,6 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Menu_Item extends CI_Model
+require_once APPPATH . '/libraries/Extended_Model.php';
+
+class Menu_Item extends Extended_Model
 {
 
 	public $id;				// int

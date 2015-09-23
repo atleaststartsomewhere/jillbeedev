@@ -3,9 +3,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rating Unit Tests
 //---------------------------------------------------------------------------------------------------------------
-class Test_Allergies extends CI_Controller
+class Test_Locations extends CI_Controller
 {
-  function Test_Allergies() { 
+  function Test_Locations() { 
     parent::__construct();
     $this->load->helper('form');
     $this->load->helper('url');
@@ -18,31 +18,25 @@ class Test_Allergies extends CI_Controller
   // Template: GET
     $parameters = array('client' => '1', 'item' => '1', 'rating' => '1');
     // url, parameter array, title, description
-    $viewdata = $this->test_case(base_url().'index.php/api/ratings/add/', $parameters, 'One', 'valid submission');
+    $viewdata = $this->test_case('api/ratings/add/', $parameters, 'One', 'valid submission');
     $this->load->view('test/get', $viewdata);
   */
 //---------------------------------------------------------------------------------------------------------------
 
   public function index() {
-    $this->load->view('test/require/top', array('title' => 'Allergies Unit Tests')); // Required first view
+    $this->load->view('test/require/top', array('title' => 'Locations Unit Tests')); // Required first view
 
-    // Test 1 - Valid Client
-    $parameters = array('client' => '1');
+    // Test 1 - Valid no parameter
+    $parameters = array('client' => '1', 'location_name' => base64_encode('test_building'), 'enabled' => 'false');
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/allergies/', $parameters, 'One', 'Valid client');
-    $this->load->view('test/get', $viewdata);
+    $viewdata = $this->test_case('admin/api/locations/create', $parameters, 'One', 'Valid Create Location');
+    $this->load->view('test/post', $viewdata);
 
-    // Test 2 - Invalid client
-    $parameters = array('client' => '0');
+    // Test 1 - Valid no parameter
+    $parameters = array('location_id' => '47');
     // url, parameter array, title, description
-    $viewdata = $this->test_case('api/allergies/', $parameters, 'Two', 'Invalid client');
-    $this->load->view('test/get', $viewdata);
-
-    // Test 2 - No client
-    $parameters = array();
-    // url, parameter array, title, description
-    $viewdata = $this->test_case('api/allergies/', $parameters, 'Three', 'No client');
-    $this->load->view('test/get', $viewdata);
+    $viewdata = $this->test_case('admin/api/locations/remove', $parameters, 'Two', 'Remove Location');
+    $this->load->view('test/post', $viewdata);
 
 
     $this->load->view('test/require/bottom' ); // Required last view
@@ -58,4 +52,4 @@ class Test_Allergies extends CI_Controller
     return $test_case; 
   }
 
-} 
+}

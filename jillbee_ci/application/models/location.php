@@ -1,8 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH . '/libraries/Extended_Model.php';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOCATION MODEL
-class Location extends CI_Model
+class Location extends Extended_Model
 {
 
 	public $id;				// int
@@ -13,6 +15,7 @@ class Location extends CI_Model
 		parent::__construct(); 
 
 		$this->load->model('model_result'); // success, message, data
+		$this->load->helper('security');
 	}
 	//---------------------------------------------------------------------------------------------------------------
 	// get_client_locations [client_id*, ordered, enabledFilter]
@@ -62,12 +65,30 @@ class Location extends CI_Model
 		return new Model_result(true, "Success: One or More Locations Sent", $query->result());
 	}
 
-	public function check_valid_client_id($client_id)
+	public function create_location($client_id, $location_name, $enabled = false)
 	{
-		$query = $this->db->get_where('clients', array('id' => $client_id), 1);
-		if ( $query->num_rows() == 0 )
+		$response_messages = array();
+		if (!$this->check_valid_location_name(xss_clean(base64_decode($location_name))))
+			array_push($response_messages, 'location_name_exists');
+		if (!$this->check_valid_client_id($client_id))
+			array_push($response_messages, 'client_id_invalid');
+
+		if (count($response_messages) > 0)
 			return false;
-		else
-			return true;
+
+		$location = array('client_id' => $client_id, 'name' => xss_clean(base64_decode($location_name)), 'enabled' => ($enabled === 'true') ? 1 : 0);
+		$this->db->insert('locations', $location);
+		return $this->get_client_locations($client_id, true, false);
+	}
+
+	public function remove($location_id)
+	{
+		if (!$this->check_valid_location($location_id))
+			return false;
+
+		$remove_query = $this->db->delete('locations', array('id' => $location_id));
+		return $remove_query;
+
+
 	}
 }
