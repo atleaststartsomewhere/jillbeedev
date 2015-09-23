@@ -13,13 +13,13 @@
 		<!-- STYLESHEETS-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="//brick.a.ssl.fastly.net/Open+Sans:300,400,700,900">
-		<link rel="stylesheet" href="<?php echo $react_url; ?>styles/style.min.css">
+		<link rel="stylesheet" href="<?php echo $react_url; ?>/styles/style.min.css">
 	</head>
 	<body>
 		<main id="main" class="js_simple simple">
 		</main>
 		<div class="isVisible"></div>
 		<!-- SCRIPTS-->
-		<script src="<?php echo $react_url; ?>js/scripts.min.js"></script>
+		<script src="<?php echo $react_url; ?>/js/scripts.min.js"></script>
 	</body>
 </html>
