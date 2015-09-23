@@ -18,6 +18,7 @@
 	<body>
 		<main id="main" class="js_simple simple">
 		</main>
+		<div class="isVisible"></div>
 		<!-- SCRIPTS-->
 		<script src="js/scripts.min.js"></script>
 	</body>
