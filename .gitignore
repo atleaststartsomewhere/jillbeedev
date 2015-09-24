@@ -2,8 +2,11 @@ jillbee_ci/documentation
 jillbee_ci/user_guide
 jillbee_ci/application/config/config.php
 jillbee_ci/application/config/database.php
+jillbee_ci/application/logs
 jillbee_dev/documentation
 jillbee_dev/user_guide
 jillbee_dev/application/config/config.php
 jillbee_dev/application/config/database.php
+jillbee_dev/application/logs
+jillbee
 .gitconfig
