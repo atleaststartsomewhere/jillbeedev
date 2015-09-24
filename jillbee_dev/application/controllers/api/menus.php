@@ -9,11 +9,11 @@ require APPPATH . '/libraries/API_Controller.php';
 // : index
 class Menus extends API_Controller {
 
-	function Menus()	{
+	function __construct()	{
 		parent::__construct();
 		$this->load->helper('date_helper');
+		$this->load->model('utility/api_response');
 		$this->load->model('menu');
-		$this->load->model('model_result');
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Menu Endpoint
@@ -26,20 +26,30 @@ class Menus extends API_Controller {
 	//---------------------------------------------------------------------------------------------------------------
 	public function index_get()
 	{
-		$parameters = array('location');
+		// Required parameters
+		$parameters = array('location', 'client');
 		$parameterCheck = $this->parameters_exist($parameters, $this->get());
 		if ( !$parameterCheck->success )
 		{
-			$this->response(new Model_Result(false, $parameterCheck->message), 200);
+			/* RESPONSE LOGGING: @param_exists */
+			$messages = array('success', 'param_missing' => $parameterCheck->missing_parameters);
+			$this->response(
+				$this->api_response->make('param_exists', false, $messages, 
+					get_class($this).'::'.__FUNCTION__, $this->get(), array()), 
+			200);
 			return;
 		}
+		// Optional parameters
+		$client = $this->get('client');
+		if ( !isset($client) )
+			$client = $this->session->userdata('client');
 		//---------------------------------------------------------------------------------------------------------------
 		if ( !$this->get('day') )
 	  		$monday = get_monday(date('Y-m-d'));
 		else
 	  		$monday = get_monday($this->get('day'));
 
-		$menu = $this->menu->get_menu($monday, $this->session->userdata('client'), $this->get('location'));
+		$menu = $this->menu->get_menu($monday, $client, $this->get('location'));
 
 		$this->response($menu, 200);
 	}

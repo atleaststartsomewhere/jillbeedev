@@ -33,13 +33,17 @@ class Menus extends API_Controller {
 			$this->response(new Model_Result(false, $parameterCheck->message), 200);
 			return;
 		}
+		// Check if optional client param is set
+		$client = $this->get('client');
+		if ( !isset($client) )
+			$client = $this->session->userdata('client');
 		//---------------------------------------------------------------------------------------------------------------
 		if ( !$this->get('day') )
 	  		$monday = get_monday(date('Y-m-d'));
 		else
 	  		$monday = get_monday($this->get('day'));
 
-		$menu = $this->menu->get_menu($monday, $this->session->userdata('client'), $this->get('location'));
+		$menu = $this->menu->get_menu($monday, $client, $this->get('location'));
 
 		$this->response($menu, 200);
 	}

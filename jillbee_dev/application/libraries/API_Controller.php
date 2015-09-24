@@ -16,20 +16,22 @@ class API_Controller extends REST_Controller {
 	public function parameters_exist($parameter_list, $post_array) {
 
 		$result = new stdClass();
-		$error_message = '';
+		$missing_params = array();
+		$existing_params = array();
 
 		foreach ($parameter_list as $parameter) 
 		{
 			if (!isset($post_array[$parameter]))
-			{
-				$error_message .= $parameter . ' is missing; ';
-			}
+				array_push($missing_params,$parameter);
+			else
+				array_push($existing_params,$parameter);
 		}
 
-		if (!empty($error_message))
+		if (!empty($missing_params))
 		{
 			$result->success = false;
-			$result->message = $error_message;
+			$result->missing_parameters = $missing_params;
+			$result->existing_parameters = $existing_params;
 		}
 		else
 		{

@@ -23,6 +23,7 @@ class FC_Day {
 		$this->date = date('U', strtotime($date));
 
 		$CI->db->order_by('order asc');
+		$CI->db->where("id NOT IN (SELECT menu_entry_id from menu_entries_disabled_locations where location_id='".$this->location_id."')");
 		$query = $CI->db->get_where('menu_entries', array("date" => $date, "client_id" => $this->client_id));
 		if ( $query->num_rows() > 0 )
 		{
