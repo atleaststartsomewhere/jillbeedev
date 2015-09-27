@@ -13,6 +13,7 @@
 		<!-- STYLESHEETS-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="//brick.a.ssl.fastly.net/Open+Sans:300,400,700,900">
+		<link rel="stylesheet" href="//brick.a.ssl.fastly.net/Alegreya:400,700,400i,700i/Linux+Libertine:400,700,400i,700i/Lora:400,700,400i,700i/Vollkorn:400,700,400i,700i">
 		<link rel="stylesheet" href="<?php echo $react_url; ?>/styles/style.min.css">
 	</head>
 	<body>
