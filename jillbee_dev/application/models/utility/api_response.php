@@ -12,6 +12,32 @@ class API_Response extends CI_Model
 		parent::__construct(); 
 	}
 
+	public function create($success, $messages, $data=array())
+	{
+		$response = array();
+		$response['success'] = $success;
+		$response['data'] = $data;
+		$response['messages'] = $this->parse_messages($messages);
+
+		return $response;
+	}
+	public function parse_messages($lang_identifiers) 
+	{
+		$this->load->language('api_responses');
+		$messages = array();
+		foreach ( $lang_identifiers as $key => $val )
+		{
+			if(is_array($val))
+			{
+				foreach($val as $item)
+					array_push($messages, sprintf($this->lang->line($key), $item));
+			}
+			else
+				array_push($messages, $this->lang->line($val));
+		}
+		return $messages;
+	}
+/*
 	public function make($logic_point, $success, $messages, $function, $args, $dataObject)
 	{
 		$timestamp = date('r');
@@ -81,5 +107,5 @@ class API_Response extends CI_Model
 				array_push($messages, $this->lang->line('internal_'.$val));
 		}
 		return $messages;
-	}
+	}*/
 }

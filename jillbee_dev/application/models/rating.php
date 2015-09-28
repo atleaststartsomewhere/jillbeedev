@@ -11,26 +11,22 @@ class Rating extends Extended_Model
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function __construct() { 
 		parent::__construct(); 
-		$this->load->model('model_result'); // success, message, data
+		$this->load->model('utility/api_response');
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public function add_rating($client_id, $menu_item_id, $rating)
 	{
-		// Validate Parameters
-		if ( !isset($client_id) )
-			return new Model_Result(false, "Error: Missing Client ID");
+		// Validate
+		$error_messages = array();
 		if ( !$this->check_valid_client_id($client_id) )
-			return new Model_Result(false, "Error: Invalid Client ID >> ".$client_id);
-
-		if ( !isset($menu_item_id) )
-			return new Model_Result(false, "Error: Missing Menu Item ID");
+			array_push($error_messages, 'Client ID ['.$client_id.']');
 		if ( !$this->check_valid_menu_item_id($menu_item_id) )
-			return new Model_Result(false, "Error: Invalid Menu Item ID >> ".$menu_item_id);
-
-		if ( !isset($rating) )
-			return new Model_Result(false, "Error: Missing Rating");
+			array_push($error_messages, 'Menu Item ID ['.$menu_item_id.']');
 		if ( $rating > 5 || $rating < 1 )
-			return new Model_Result(false, "Error: Invalid Rating >> ".$rating);
+			array_push($error_messages, 'Rating ['.$rating.']');
+		if ( count($error_messages) > 0 )
+			return $this->api_response->create(false, array('param_invalid' => $error_messages));
+		// End-Validate
 
 		// Run Query
 		$ratingObject = array("client_id" => $client_id,
@@ -39,13 +35,25 @@ class Rating extends Extended_Model
 		$query = $this->db->insert("ratings", $ratingObject);
 
 		// Send back new rating and count
-		$newRatingObject = new stdClass();
-		$newRatingObject = $this->get_rating($client_id, $menu_item_id);
-		return new Model_Result(true, "New Rating Recorded.",$newRatingObject);
+		$rating = $this->get_rating($client_id, $menu_item_id);
+		if ( !$rating['success'] )
+			return $rating;
+		else
+			return $this->api_response->create(true, array('success'), $rating['data']);
 	}
 
 	public function get_rating($client_id, $menu_item_id)
 	{
+		// Validate
+		$error_messages = array();
+		if ( !$this->check_valid_client_id($client_id) )
+			array_push($error_messages, 'Client ID ['.$client_id.']');
+		if ( !$this->check_valid_menu_item_id($menu_item_id) )
+			array_push($error_messages, 'Menu Item ID ['.$menu_item_id.']');
+		if ( count($error_messages) > 0 )
+			return $this->api_response->create(false, $error_messages);
+		// End-Validate
+
 		$resultObject = new stdClass();
 		$resultObject->rating = 0;
 		$resultObject->rating_count = 0;
@@ -57,7 +65,9 @@ class Rating extends Extended_Model
 		{
 			$resultObject->rating_count = $query->num_rows();
 			$resultObject->rating = $resultObject->rating/$resultObject->rating_count;
+			return $this->api_response->create(true, array('success'), $resultObject);
 		}
-		return $resultObject;
+		else
+			return $this->api_response->create(false, array('no_rows'));			
 	}
 }
